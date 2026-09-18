@@ -18,6 +18,14 @@ development docs. No application code lives here.
 | [kingdoms-services](https://github.com/merlin-pinpin/kingdoms-services) | All Python code: generic core, Discord platform, mods, YAML configs |
 | [kingdoms-infra](https://github.com/merlin-pinpin/kingdoms-infra) | Docker, CI/CD, GitOps manifests, deployment scripts |
 
+## Key Principles
+
+1. **Platform-agnostic core**: all game logic lives in `kingdoms-services/src/kingdoms/core/`, behind the `IPlatform` interface. Discord is one implementation; Twitch/Telegram can be added later without touching game logic.
+2. **Modular mods**: each game feature (register, ladder, clans, ...) is a self-contained mod that declares its channels and roles via its YAML config (`kingdoms-services/config/mods/<mod>.yaml`) and documents its rules in `docs/MODS/<mod-name>/`.
+3. **MongoDB only** (no relational DB) for durable state, with **Redis** for cache and distributed locks.
+4. **Full-stack testing**: `MockDiscord` provides an in-memory `IPlatform` simulation; no test touches the real Discord API.
+5. **i18n by default**: English is the default, French is available; all user-facing strings come from YAML locale files.
+
 ## Documentation structure
 
 ```
@@ -45,6 +53,7 @@ kingdoms/
 - [AGENTS.md](AGENTS.md) — rules every AI coding agent must follow in this repo
 - [ROADMAP.md](ROADMAP.md) — project phases and issue status (updated via the "Update roadmap" skill)
 - [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — technical architecture
+- [docs/architecture/](docs/architecture/) — deep-dives: core design, mod system, discord.py components, testing
 - [docs/WORKFLOWS.md](docs/WORKFLOWS.md) — game workflows
 - [docs/DECISIONS/](docs/DECISIONS/) — architecture decision records
 - [docs/MODS/](docs/MODS/) — mods documentation

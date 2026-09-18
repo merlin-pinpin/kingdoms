@@ -170,6 +170,15 @@ workflow payloads evolve with the game rules):
 UI conventions (persistent views, dynamic items, `custom_id` scheme) are
 documented in [architecture/discord.md](architecture/discord.md).
 
+Architecture deep-dives:
+
+- [architecture/core.md](architecture/core.md) — core services design
+  (`WorkflowEngine`, `ChannelService`, `StateService`, durable vs hot state)
+- [architecture/mods.md](architecture/mods.md) — mod system design
+- [architecture/discord.md](architecture/discord.md) — Discord UI components
+- [architecture/testing.md](architecture/testing.md) — `MockDiscord` and
+  testing strategy
+
 ## 4. Configuration (`kingdoms-services/config/`)
 
 All configuration is versioned YAML, loaded at startup:
