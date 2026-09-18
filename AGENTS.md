@@ -15,4 +15,4 @@ Kingdoms documentation repo — the **source of truth** for the Kingdoms Discord
 - Reference issues with full repo-qualified identifiers (e.g., `kingdoms-services#12`) since cross-repo references are common.
 - Follow the ADR process in `docs/DECISIONS/` for any major architecture change.
 - Mods documentation lives in `docs/MODS/<mod-name>/` and follows the template in `templates/mod-template/`.
-- At the end of every session, run the "Update roadmap" skill (`docs/SKILLS/update-roadmap.md`) to sync `ROADMAP.md` with GitHub issue states.
+- `ROADMAP.md` is synced automatically by the `sync-roadmap.yml` workflow (`scripts/sync_roadmap.py`, kingdoms#27). At the end of a session, verify the rolling sync PR per the "Update roadmap" skill (`docs/SKILLS/update-roadmap.md`); run the script manually only if the automation failed or for statuses the automation never sets (`in-progress`, `blocked`).

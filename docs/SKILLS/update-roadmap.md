@@ -1,48 +1,68 @@
 # Skill: Update roadmap
 
 Keep `ROADMAP.md` (repo root) in sync with the actual GitHub issue states
-across the three Kingdoms repos. The roadmap must never go stale: at the end of
-every working session, and on request ("update the roadmap"), execute this
-procedure exactly as written.
+across the three Kingdoms repos.
 
-## Procedure
+**This skill is automated.** The `sync-roadmap.yml` workflow runs
+`scripts/sync_roadmap.py` on every issue/PR state change (plus a weekly
+schedule) and opens or updates a single rolling PR
+(`docs(roadmap): sync with GitHub issues`, branch `automation/roadmap-sync`).
+See kingdoms#27.
 
-1. **Collect issue states** for `merlin-pinpin/kingdoms`,
-   `merlin-pinpin/kingdoms-services`, and `merlin-pinpin/kingdoms-infra`:
+Use this skill only to **verify** the automation (or to fix it when it is
+broken), and to handle what the automation deliberately does not do.
 
+## What the automation handles
+
+| GitHub state | Roadmap status |
+| ------------ | --------------- |
+| closed as completed | `done` |
+| closed as not planned | `dropped` |
+| open + linked PR | `in-review` |
+| open, no PR | `todo` |
+
+Unreadable sibling repos (missing `ROADMAP_SYNC_TOKEN`): issues keep their
+current status, warning printed, exit 0.
+
+The automation also appends the Change Log row and recomputes the Current
+Phase (lowest phase with a non-`done`/`dropped` issue).
+
+## What stays manual
+
+- `in-progress` and `blocked`: they reflect human judgment (someone
+  actively working, a blocking dependency). The automation never sets
+  them; if it sees them, it leaves them alone only if the issue is open.
+  **Check these two values yourself** — the automation may overwrite
+  `in-progress` with `in-review`/`todo` if a PR state changed.
+- Moving rows to "Out of Scope": `dropped` is set in the status column;
+  the manual part is writing the prose line in the Out of Scope section.
+- Adding rows for newly created issues (the automation only updates
+  statuses of referenced issues, it does not discover new ones).
+
+## Procedure (verification / manual fallback)
+
+1. Check the rolling PR: is there an open
+   `docs(roadmap): sync with GitHub issues` PR? If yes, review and merge
+   it — done.
+2. If the workflow failed or the roadmap looks stale, run locally:
    ```bash
-   gh issue list --repo merlin-pinpin/<repo> --state all --limit 200 \
-     --json number,title,state,stateReason
+   gh workflow run sync-roadmap.yml --repo merlin-pinpin/kingdoms
    ```
-
-2. **Map each issue** referenced in `ROADMAP.md` to a status:
-
-   | GitHub state | Roadmap status |
-   | ------------ | --------------- |
-   | open + linked PR | `in-review` |
-   | open + assignee actively working | `in-progress` |
-   | open + no PR | `todo` |
-   | open + blocked dependency | `blocked` |
-   | closed as completed | `done` |
-   | closed as not planned | `dropped` (move the row to "Out of Scope") |
-
-   Cross-repo links are written fully qualified (`kingdoms-services#12`).
-
-3. **Update "Current Phase"**: the lowest phase that still has non-`done`
-   issues. Sub-tasks do not affect the phase calculation.
-
-4. **Append a Change Log row** (dated) if and only if any status changed or
-   issues were added/removed.
-
-5. **Open a PR** with the title `docs(roadmap): sync with GitHub issues`.
+   or, as a manual fallback:
+   ```bash
+   GITHUB_TOKEN=$(gh auth token) python3 scripts/sync_roadmap.py --dry-run
+   ```
+3. For the manual parts above, edit `ROADMAP.md` and open a PR titled
+   `docs(roadmap): sync with GitHub issues` (any branch; do not stack on
+   the automation branch).
 
 ## Rules
 
-- The PR must **only touch `ROADMAP.md`**.
-- Never invent statuses: every row must reflect an actual GitHub issue state
-  observed in step 1.
-- New issues discovered during the sync are added to the matching phase table
-  (or "Sub-tasks"); issues missing from GitHub are removed.
+- Never invent statuses: every automated row must reflect an actual
+  GitHub issue state.
+- The Change Log is append-only.
+- A manual sync PR must only touch `ROADMAP.md` (+ prose in Out of
+  Scope).
 - Do not reorder tables; keep tracks grouped by repo.
 
 ## Status values
@@ -52,5 +72,6 @@ procedure exactly as written.
 ## See also
 
 - [../../ROADMAP.md](../../ROADMAP.md) — the roadmap this skill maintains
-- [../../AGENTS.md](../../AGENTS.md) — the rule that triggers this skill at
-  the end of every session
+- [../../scripts/sync_roadmap.py](../../scripts/sync_roadmap.py) — the sync script
+- [../../AGENTS.md](../../AGENTS.md) — the session-end rule that references this skill
+- kingdoms#27 — automation tracking issue
