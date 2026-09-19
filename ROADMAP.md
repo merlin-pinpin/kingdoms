@@ -13,16 +13,17 @@ Phase 1 — Foundations (repos structure, architecture docs)
 ### Phase 1 — Foundations
 | Track | Issue | Status |
 |-------|-------|--------|
-| kingdoms: repo structure | kingdoms#1 | in-review |
-| kingdoms: architecture docs | kingdoms#2 | in-review |
-| kingdoms: docs CI | kingdoms#3 | in-review |
-| kingdoms: WORKFLOWS.md | kingdoms#4 | todo |
-| kingdoms: MODS docs | kingdoms#5 | todo |
-| kingdoms: ADRs | kingdoms#6 | todo |
-| kingdoms: governance (LICENSE, CLA) | kingdoms#11 | in-review |
-| kingdoms: ROADMAP + skill | kingdoms#9 | in-review |
-| kingdoms: vibe-coding workflow doc | kingdoms#10 | in-review |
-| kingdoms: roadmap automation | kingdoms#27 | in-progress |
+| kingdoms: repo structure | kingdoms#1 | done |
+| kingdoms: architecture docs | kingdoms#2 | done |
+| kingdoms: docs CI | kingdoms#3 | done |
+| kingdoms: WORKFLOWS.md | kingdoms#4 | done |
+| kingdoms: MODS docs | kingdoms#5 | done |
+| kingdoms: ADRs | kingdoms#6 | done |
+| kingdoms: governance (LICENSE, CLA) | kingdoms#11 | done |
+| kingdoms: ROADMAP + skill | kingdoms#9 | done |
+| kingdoms: vibe-coding workflow doc | kingdoms#10 | done |
+| kingdoms: roadmap automation | kingdoms#27 | done |
+| kingdoms: Actions PR-create setting | kingdoms#31 | in-review |
 | services: repo structure | kingdoms-services#1 | todo |
 | services: MockDiscord | kingdoms-services#2 | todo |
 | infra: repo structure | kingdoms-infra#1 | todo |
@@ -67,8 +68,8 @@ Phase 1 — Foundations (repos structure, architecture docs)
 | Registration DM flow | kingdoms-services#25 | todo |
 | Channel/role mgmt | kingdoms-services#26 | todo |
 | AoE2 game service | kingdoms-services#27 | todo |
-| Docs architecture | kingdoms#7 | todo |
-| discord.py guide | kingdoms#8 | in-review |
+| Docs architecture | kingdoms#7 | done |
+| discord.py guide | kingdoms#8 | done |
 
 ## Out of Scope
 - Report mod (`/report` command) — dropped, see kingdoms-services#18
@@ -80,3 +81,4 @@ Phase 1 — Foundations (repos structure, architecture docs)
 |------|--------|
 | 2026-09-18 | Initial roadmap (kingdoms#9), synced with GitHub issue states |
 | 2026-09-18 | kingdoms#3 in-review (PR #21); session PRs #12-#21 opened for kingdoms#1-#6, #8-#11 |
+| 2026-09-19 | auto-sync: kingdoms#1 in-review->done; kingdoms#2 in-review->done; kingdoms#3 in-review->done; kingdoms#4 todo->done; kingdoms#5 todo->done; (+8 more) |

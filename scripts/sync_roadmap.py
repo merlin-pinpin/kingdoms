@@ -50,7 +50,8 @@ PHASE_HEADING_RE = re.compile(r"^### Phase (?P<num>\d+) —")
 CURRENT_PHASE_RE = re.compile(r"^Phase (?P<num>\d+)\b")
 CLOSING_REF_RE = re.compile(
     r"\b(?:close[ds]?|closing|fix(?:e[ds]?)?|fixing|resolv(?:e[ds]?)?|resolving)"
-    r"[^#\n]*#(?P<num>\d+)",
+    r"[^#\n]*?(?:(?P<owner>[\w.-]+)/(?P<ref_repo>[\w.-]+))?"
+    r"#(?P<num>\d+)",
     re.IGNORECASE,
 )
 BULLET_REF_RE = re.compile(r"\b(?P<repo>[\w.-]+)#(?P<num>\d+)\b")
@@ -144,6 +145,9 @@ def fetch_repo_state(
         pulls = []
     for pull in pulls:
         for match in CLOSING_REF_RE.finditer(pull.get("body") or ""):
+            ref_repo = match["ref_repo"]
+            if ref_repo and ref_repo != repo:
+                continue
             linked.add(int(match["num"]))
     return issues, linked
 
